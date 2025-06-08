@@ -11,43 +11,18 @@ public class ProprietarioRequestDTO {
 
     public ProprietarioRequestDTO() {}
 
-    public String getNome() {
-        return nome;
-    }
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+    public String getCpf() { return cpf; }
+    public void setCpf(String cpf) { this.cpf = cpf; }
 
-    public String getCpf() {
-        return cpf;
-    }
+    public String getTelefone() { return telefone; }
+    public void setTelefone(String telefone) { this.telefone = telefone; }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public List<Long> getImovelIds() {
-        return imovelIds;
-    }
-
-    public void setImovelIds(List<Long> imovelIds) {
-        this.imovelIds = imovelIds;
-    }
+    public List<Long> getImovelIds() { return imovelIds; }
+    public void setImovelIds(List<Long> imovelIds) { this.imovelIds = imovelIds; }
 }

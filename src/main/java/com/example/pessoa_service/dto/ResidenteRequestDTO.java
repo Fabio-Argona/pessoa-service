@@ -7,45 +7,19 @@ public class ResidenteRequestDTO {
     private String email;
     private Long imovelId;
 
-    public ResidenteRequestDTO() {}
+    // Getters e Setters
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
 
-    public String getNome() {
-        return nome;
-    }
+    public String getCpf() { return cpf; }
+    public void setCpf(String cpf) { this.cpf = cpf; }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+    public String getTelefone() { return telefone; }
+    public void setTelefone(String telefone) { this.telefone = telefone; }
 
-    public String getCpf() {
-        return cpf;
-    }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Long getImovelId() {
-        return imovelId;
-    }
-
-    public void setImovelId(Long imovelId) {
-        this.imovelId = imovelId;
-    }
+    public Long getImovelId() { return imovelId; }
+    public void setImovelId(Long imovelId) { this.imovelId = imovelId; }
 }

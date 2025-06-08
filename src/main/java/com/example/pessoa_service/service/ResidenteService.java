@@ -1,10 +1,10 @@
 package com.example.pessoa_service.service;
 
+import com.example.pessoa_service.dto.ImovelResponseDTO;
 import com.example.pessoa_service.dto.ResidenteRequestDTO;
 import com.example.pessoa_service.dto.ResidenteResponseDTO;
 import com.example.pessoa_service.entity.Imovel;
 import com.example.pessoa_service.entity.Residente;
-import com.example.pessoa_service.mapper.ResidenteMapper;
 import com.example.pessoa_service.repository.ImovelRepository;
 import com.example.pessoa_service.repository.ResidenteRepository;
 import org.springframework.stereotype.Service;
@@ -25,25 +25,78 @@ public class ResidenteService {
     }
 
     public ResidenteResponseDTO criarResidente(ResidenteRequestDTO dto) {
-        Residente r = new Residente();
-        r.setNome(dto.getNome());
-        r.setCpf(dto.getCpf());
-        r.setTelefone(dto.getTelefone());
-        r.setEmail(dto.getEmail());
+        Residente residente = new Residente();
+        residente.setNome(dto.getNome());
+        residente.setCpf(dto.getCpf());
+        residente.setTelefone(dto.getTelefone());
+        residente.setEmail(dto.getEmail());
 
         if (dto.getImovelId() != null) {
             Optional<Imovel> imovel = imovelRepository.findById(dto.getImovelId());
-            imovel.ifPresent(r::setImovel);
+            imovel.ifPresent(residente::setImovel);
         }
 
-        Residente salvo = residenteRepository.save(r);
-        return ResidenteMapper.toDTO(salvo);
+        residente = residenteRepository.save(residente);
+        return toResponseDTO(residente);
+    }
+
+    public ResidenteResponseDTO buscarPorId(Long id) {
+        Optional<Residente> residenteOpt = residenteRepository.findById(id);
+        return residenteOpt.map(this::toResponseDTO).orElse(null);
     }
 
     public List<ResidenteResponseDTO> listarTodos() {
         return residenteRepository.findAll()
                 .stream()
-                .map(ResidenteMapper::toDTO)
+                .map(this::toResponseDTO)
                 .collect(Collectors.toList());
+    }
+
+    public ResidenteResponseDTO atualizar(Long id, ResidenteRequestDTO dto) {
+        Optional<Residente> opt = residenteRepository.findById(id);
+        if (opt.isEmpty()) return null;
+
+        Residente residente = opt.get();
+        residente.setNome(dto.getNome());
+        residente.setCpf(dto.getCpf());
+        residente.setTelefone(dto.getTelefone());
+        residente.setEmail(dto.getEmail());
+
+        if (dto.getImovelId() != null) {
+            Optional<Imovel> imovel = imovelRepository.findById(dto.getImovelId());
+            imovel.ifPresent(residente::setImovel);
+        } else {
+            residente.setImovel(null);
+        }
+
+        residente = residenteRepository.save(residente);
+        return toResponseDTO(residente);
+    }
+
+    public boolean deletar(Long id) {
+        if (!residenteRepository.existsById(id)) return false;
+        residenteRepository.deleteById(id);
+        return true;
+    }
+
+    private ResidenteResponseDTO toResponseDTO(Residente residente) {
+        ResidenteResponseDTO dto = new ResidenteResponseDTO();
+        dto.setId(residente.getId());
+        dto.setNome(residente.getNome());
+        dto.setCpf(residente.getCpf());
+        dto.setTelefone(residente.getTelefone());
+        dto.setEmail(residente.getEmail());
+
+        if (residente.getImovel() != null) {
+            ImovelResponseDTO imovelDTO = new ImovelResponseDTO();
+            imovelDTO.setId(residente.getImovel().getId());
+            imovelDTO.setNumeroUnidade(residente.getImovel().getNumeroUnidade());
+            imovelDTO.setBloco(residente.getImovel().getBloco());
+            imovelDTO.setTipo(residente.getImovel().getTipo());
+            imovelDTO.setStatus(residente.getImovel().getStatus());
+            dto.setImovel(imovelDTO);
+        }
+
+        return dto;
     }
 }
